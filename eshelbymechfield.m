@@ -1,17 +1,17 @@
 function [u,ud1,varargout]=eshelbymechfield(a,x,lam,es,nu)
 
-x=col(x);
-a=col(a);
+x=col(x); % position for calculation
+a=col(a); % void elliptical axis lengths
 
 %% Determine lambda derivatives
 
-ld1=zeros(3,1);
-ld2=zeros(3,3);
-Ci=zeros(3,1);
-Fij=zeros(3,3);
+ld1=zeros(3,1); % first gradient of lambda
+ld2=zeros(3,3); % second gradient of lambda
+Ci=zeros(3,1); % first gradient of C
+Fij=zeros(3,3); % second gradient term
 
 pa = prod(a);
-la=zeros(1,3);
+la=zeros(1,3); % squares of elliptical axis lengths for ellipse containing point x
 for i = 1 : 3
     la(i) = a(i)^2 + lam;
 end
@@ -47,16 +47,16 @@ end
 %% Determine I-integrals
 
 iis=iint(a,lam);
-i0=iis{1};
-i1=[iis{2}];
-i2=[iis{3}];
+i0=iis{1}; % 0-order I-integrals
+i1=[iis{2}]; % 1-order I-integrals
+i2=[iis{3}]; % 2-order I-integrals
 
 %% Determine I-integral derivatives
 
-i1d1=zeros(3,3);
-i1d2=zeros(3,3,3);
-i2d1=zeros(3,3,3);
-i2d2=zeros(3,3,3,3);
+i1d1=zeros(3,3); % gradient of 1-order I-integrals
+i1d2=zeros(3,3,3); % second gradient of 1-order I-integrals
+i2d1=zeros(3,3,3); % gradient of 2-order I-integrals
+i2d2=zeros(3,3,3,3); % second gradient of 2-order I-integrals
 
 for i = 1 : 3
     for j = 1 : 3
@@ -74,12 +74,12 @@ end
 
 %% Determine mechanical fields
 
-psd3=zeros(3,3,3);
-psd4=zeros(3,3,3,3);
-phd1=zeros(3,1);
-phd2=zeros(3,3);
+psd3=zeros(3,3,3); % third gradient of psi potential
+psd4=zeros(3,3,3,3); % fourth gradient of psi potential
+phd1=zeros(3,1); % gradient of psi potential
+phd2=zeros(3,3); % second gradient of psi potential
 
-kd=eye(3);
+kd=eye(3); % matrix of kronecker delta
 
 for i = 1 : 3
     phd1(i) = -x(i)*i1(i);
@@ -96,10 +96,10 @@ for i = 1 : 3
     end
 end
 
-u=zeros(3,1);
-ud1=zeros(3,3);
+u=zeros(3,1); % displacement
+ud1=zeros(3,3); % displacement gradient
 
-sdes=sum(diag(es));
+sdes=sum(diag(es)); % trace of eigenstrain tensor
 
 for i = 1 : 3
     u(i) = u(i) + 1/8/pi/(1-nu)*(-2*nu*sdes*phd1(i));
