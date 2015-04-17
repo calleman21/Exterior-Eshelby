@@ -30,7 +30,6 @@ if lam>0
 %         Ci(i) = x(i)^2/(la(i))^2-sum(x.*x./(a.^2+lam).^3)*2*x(i)/(la(i))/C;
         Ci(i) = 2*x(i)/(la(i))^2-2*sum(x.^2./(a.^2+lam).^3)*2*x(i)/(la(i))/C;
         for j = 1 : 3
-%             Fij(i,j) = 2*krondelt(i,j)/(la(i));
             Fij(i,j) = 2*krondelt(i,j)/(la(i))-2*x(i)/(la(i))^2*ld1(j);
         end
     end
