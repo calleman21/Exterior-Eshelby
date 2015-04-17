@@ -45,11 +45,8 @@ elseif abs(a(1)-a(2))<lv % oblate ellipsoid a1=a2>a3
         
 elseif abs(a(2)-a(3))<lv % prolate ellipsoid a1>a2=a3
     
-%     fv = (sqrt(la(1))-sqrt(da13))/(sqrt(la(1))+da13);
-%     fv = (sqrt(la(1))+sqrt(la(3)))/(sqrt(la(1))-sqrt(la(3)));
     fv=sqrt(da13)/sqrt(la(3))+sqrt(la(1))/sqrt(la(3));
     lfv=log(fv);
-%     lfv=abs(log(fv));
     
     iints{1} = 4*pi*pa/sqrt(da13)*lfv;
     
