@@ -1,5 +1,30 @@
 function sol=exterioreshelby(varargin)
 
+if nargin==0
+    ltyp=2;
+    triax=Inf;
+    ef=1e-2;
+    np=201;
+    plane=12;
+    a=[.05 .05 .05];
+    b=[.5 .5 .5];
+else
+    if nargin~=7
+        fprintf('Expected 7 inputs, received %d\n',nargin);
+        sol=struct();
+        return
+    end
+    a=varargin{1};
+    b=varargin{2};
+    ef=varargin{3};
+    ltyp=varargin{4};
+    triax=varargin{5};
+    np=varargin{6};
+    plane=varargin{7};
+end
+
+explot=0;
+
 E=1e3;
 nu=0.3;
 
@@ -27,25 +52,7 @@ Cv(5,5)=Cv(4,4);
 Cv(6,6)=Cv(4,4);
 C=voigt2(Cv);
 
-a0=[.05 .05 .05];
-a=a0;
-
 e0=zeros(3,3);
-
-if nargin==0
-    ltyp=2;
-    triax=Inf;
-    ef=1e-2;
-    np=201;
-    plane=12;
-else
-    ef=varargin{1};
-    ltyp=varargin{2};
-    triax=varargin{3};
-    np=varargin{4};
-    plane=varargin{5};
-end
-
 
 if ltyp==1
     e0(1,1)=ef; e0(2,2)=-nu*e0(1,1); e0(3,3)=-nu*e0(1,1); % uniaxial stress
@@ -69,10 +76,7 @@ end
 
 e0v=voigt2(e0);
 
-
-bx=0.5;
-by=0.5;
-bz=0.5;
+bx=b(1); by=b(2); bz=b(3);
 
 x1p=linspace(-bx,bx,np);
 x2p=linspace(-by,by,np);
@@ -477,8 +481,6 @@ set(gcf,'colormap',[[[0:31]';31*ones(32,1)] [[0:31]';[31:-1:0]'] [31*ones(32,1);
 colorbar;
 title(['von Mises Stress (\chi=' num2str(triax,'%.2f') ')'])
 set(gca,'fontsize',18)
-
-explot=0;
 
 if explot==1
 
